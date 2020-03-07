@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.ssm.shop.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.example.ssm.shop.entity.Order">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="price" property="price"/>
+        <association property="user" javaType="com.example.ssm.shop.entity.User">
+            <id property="id" column="user_id" />
+            <result property="username" column="username"/>
+            <result property="displayName" column="display_name"/>
+        </association>
+        <association property="product" javaType="com.example.ssm.shop.entity.Product">
+            <id property="id" column="product_id" />
+            <result property="name" column="product_name"/>
+        </association>
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+            id, user_id, product_id, status, create_time, price
+        FROM
+            `order`
+        WHERE
+            id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+       DELETE 
+       FROM
+         `order`
+       WHERE
+         id = #{id}
+    </delete>
+
+
+    <delete id="deleteByProductId">
+        DELETE
+        FROM
+            `order`
+        WHERE
+            product_id = #{value}
+    </delete>
+
+    <delete id="deleteByUserId">
+         DELETE
+        FROM
+            `order`
+        WHERE
+            user_id = #{userId}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.ssm.shop.entity.Order" useGeneratedKeys="true"
+            keyProperty="id">
+       INSERT INTO `order`
+        ( user_id,  product_id, status, create_time, price)
+        VALUES
+	    ( #{userId}, #{productId}, #{status}, #{createTime}, #{price})
+    </insert>
+
+    <update id="update" parameterType="com.example.ssm.shop.entity.Order">
+        update
+        `order`
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="status != null">price = #{price},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findAll" parameterType="com.example.ssm.shop.entity.Order" resultMap="BaseResultMap">
+        SELECT
+            o.id, o.user_id, o.product_id, o.status, o.create_time, o.price,
+            u.id user_id, u.username username, u.display_name display_name,
+            o.product_id product_id, p.name product_name
+        FROM
+            `order` o
+        LEFT JOIN  `user` u ON o.user_id = u.id
+        LEFT JOIN  `product` p ON o.product_id = p.id
+        ORDER BY o.create_time DESC
+    </select>
+
+    <select id="findByUserIdAndProductId" resultMap="BaseResultMap">
+        SELECT
+            id, user_id, product_id, status, create_time, price
+        FROM
+            `order`
+        WHERE
+            user_id = #{userId} AND product_id = #{productId}
+        LIMIT 1
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+            o.id, o.user_id, o.product_id, o.status, o.create_time, o.price,
+            u.id user_id, u.username username, u.display_name display_name,
+            o.product_id product_id, p.name product_name
+        FROM
+            `order` o
+        LEFT JOIN  `user` u ON o.user_id = u.id
+        LEFT JOIN  `product` p ON o.product_id = p.id
+        WHERE
+            o.user_id = #{userId}
+        ORDER BY o.create_time DESC
+    </select>
+
+
+</mapper>

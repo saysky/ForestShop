@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.ssm.shop.mapper.BiddingMapper">
+    <resultMap id="BaseResultMap" type="com.example.ssm.shop.entity.Bidding">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="product_id" property="productId"/>
+        <result column="price" property="price"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <association property="user" javaType="com.example.ssm.shop.entity.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="displayName" column="display_name"/>
+        </association>
+        <association property="product" javaType="com.example.ssm.shop.entity.Product">
+            <id property="id" column="product_id"/>
+            <result property="name" column="product_name"/>
+            <result property="status" column="product_status"/>
+            <result property="currentPrice" column="product_current_price"/>
+        </association>
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+            id, user_id, product_id, price, create_time, status
+        FROM
+            `bidding`
+        WHERE
+            id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+       DELETE 
+       FROM
+         `bidding`
+       WHERE
+         id = #{id}
+    </delete>
+
+    <delete id="deleteByProductId">
+        DELETE
+       FROM
+         `bidding`
+       WHERE
+         id = #{productId}
+    </delete>
+
+    <delete id="deleteByUserId">
+      DELETE
+       FROM
+         `bidding`
+       WHERE
+         user_id = #{userId}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.ssm.shop.entity.Bidding" useGeneratedKeys="true"
+            keyProperty="id">
+       INSERT INTO `bidding`
+        ( user_id, product_id, price, create_time, status )
+        VALUES
+	    ( #{userId}, #{productId}, #{price}, #{createTime}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.example.ssm.shop.entity.Bidding">
+        update
+        `bidding`
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findAll" parameterType="com.example.ssm.shop.entity.Bidding" resultMap="BaseResultMap">
+        SELECT
+        b.id, b.user_id, b.product_id, b.price, b.create_time, b.status,
+        u.id user_id, u.username username, u.display_name display_name,
+        b.product_id product_id, p.name product_name, p.status product_status, p.current_price product_current_price
+        FROM
+        `bidding` b, `user` u, `product` p
+        <where>
+            b.user_id = u.id AND b.product_id = p.id AND
+            <if test="userId != null">
+                b.user_id = #{userId} AND
+            </if>
+            <if test="productId != null">
+                b.product_id = #{productId} AND
+            </if>
+            1 = 1
+        </where>
+        ORDER BY b.price DESC
+    </select>
+
+    <select id="findBiddingOfMaxPriceByProductId" resultMap="BaseResultMap">
+        SELECT
+            id, user_id, product_id, price, create_time, status
+        FROM
+            `bidding`
+        WHERE
+            product_id = #{productId} ORDER BY price DESC, id ASC LIMIT 1
+    </select>
+
+    <select id="findByUserIdAndProductId" resultMap="BaseResultMap">
+        SELECT
+            id, user_id, product_id, price, create_time, status
+        FROM
+            `bidding`
+        WHERE
+            product_id = #{productId} AND user_id = #{userId}
+        LIMIT 1
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT
+        b.id, b.user_id, b.product_id, b.price, b.create_time, b.status,
+        u.id user_id, u.username username, u.display_name display_name,
+        b.product_id product_id, p.name product_name, p.status product_status, p.current_price product_current_price
+        FROM
+        `bidding` b, `user` u, `product` p
+        <where>
+            b.user_id = u.id AND
+            b.product_id = p.id AND
+            b.user_id = #{userId}
+        </where>
+        ORDER BY b.create_time DESC
+    </select>
+
+    <select id="countByUserId" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            `bidding`
+        WHERE
+            user_id = #{userId}
+    </select>
+
+    <select id="findFinalBiddingByMaxPrice" resultMap="BaseResultMap">
+         SELECT
+            a.id,
+            a.user_id,
+            a.price,
+            a.product_id,
+            a.status
+        FROM
+            bidding a,
+            ( SELECT product_id, MAX( price ) AS price FROM bidding GROUP BY product_id ) b
+        WHERE
+            a.price = b.price
+            AND a.product_id = b.product_id
+    </select>
+
+
+</mapper>
