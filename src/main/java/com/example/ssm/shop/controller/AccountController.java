@@ -117,6 +117,7 @@ public class AccountController extends BaseController {
         }
 
         // 修改Session信息
+        user.setType(loginUser.getType());
         session.setAttribute(CommonConstant.USER_SESSION_KEY, user);
         return JsonResult.success("保存成功");
     }
