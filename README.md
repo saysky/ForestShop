@@ -1,6 +1,6 @@
 # ForestShop
 基于 SSM 实现的拍卖系统，包含商品、购物车、竞拍记录、订单等功能，包括普通用户和管理员两种角色，详情可以下载 doc 文件进行查看。<br/>
-预览地址：[http://forestblog.liuyanzhao.com/](http://forestblog.liuyanzhao.com) <br/>
+预览地址：[http://forestshop.liuyanzhao.com/](http://forestshop.liuyanzhao.com) <br/>
 详细介绍：[https://liuyanzhao.com/10189.html](https://liuyanzhao.com/10189.html)
 ## 技术组成
 - Java
