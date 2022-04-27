@@ -1,3 +1,7 @@
+## 博主开发的其他商城项目全部在这里
+**[https://liuyanzhao.com/shop.html?k=商城](https://liuyanzhao.com/shop.html?k=商城)**  
+- -------------------------------------------------------------------------------
+感谢支持正版项目的朋友
 # ForestShop
 基于 SSM 实现的拍卖系统，包含商品、购物车、竞拍记录、订单等功能，包括普通用户和管理员两种角色，详情可以下载 doc 文件进行查看。<br/>
 预览地址：[http://forestshop.liuyanzhao.com/](http://forestshop.liuyanzhao.com) <br/>
