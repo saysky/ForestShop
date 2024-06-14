@@ -219,6 +219,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
     <build>
         <resources>
             <!-- 编译之后包含xml -->
