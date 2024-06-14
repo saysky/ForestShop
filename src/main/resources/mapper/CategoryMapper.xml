@@ -51,4 +51,3 @@
             c.id ASC
     </select>
 
-</mapper>

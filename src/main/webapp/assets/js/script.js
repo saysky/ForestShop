@@ -606,4 +606,3 @@ $('.confirm_order').click(function () {
             }
         }
     });
-});

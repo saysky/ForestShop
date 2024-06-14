@@ -214,4 +214,3 @@ public class MyExceptionHandler {
         model.addAttribute("msg", message);
         return new ModelAndView(viewName);
     }
-}

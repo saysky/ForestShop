@@ -54,4 +54,3 @@ public class Order implements Serializable {
      */
     private Product product;
 
-}
