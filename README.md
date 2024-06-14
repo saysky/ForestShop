@@ -1,4 +1,5 @@
 ## 博主开发的其他商城项目全部在这里
+**[https://liuyanzhao.com/shop.html](https://liuyanzhao.com/shop.html)**  
 **[https://liuyanzhao.com/shop.html?k=商城](https://liuyanzhao.com/shop.html?k=商城)**  
 - -------------------------------------------------------------------------------
 感谢支持正版项目的朋友
